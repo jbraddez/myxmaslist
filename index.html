@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacob's Christmas List</title>
+    <link rel="website icon" href="./images/web-logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Titan+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Here's my Christmas list!</h1>
+    </header>
+
+    <main>
+        <div class="card">
+            <a href="https://youtooz.com/products/jugger-nog">
+                <div class="img-cont">
+                    <img src="https://main-site-product-360.youtooz.com/r2023-production/5t4ca5/1.png" alt="">
+                </div>
+                <div class="label-cont">
+                    <h3>Youtooz Juggernog</h3>
+                    <input type="checkbox"><!--ID CHECKBOX-->
+                </div> 
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="https://amzn.eu/d/9LV2aRX">
+                <div class="img-cont">
+                    <img src="https://gabbagoods.com/cdn/shop/products/carryingcase.png?v=1680554596" alt="">
+                </div>
+                <div class="label-cont">
+                    <h3>Quest 3S Case</h3>
+                    <input type="checkbox"><!--ID CHECKBOX-->
+                </div> 
+            </a>
+        </div>
+        
+        <div class="card">
+            <a href="https://www.gov.uk/apply-first-provisional-driving-licence">
+                <div class="img-cont">
+                    <img src="https://www.idtemplate.to/wp-content/uploads/2024/05/DL-UK-Provisional-Driving-License-FRONT-1.png" alt="">
+                </div>
+                <div class="label-cont">
+                    <h3>Provisional License</h3>
+                    <input type="checkbox"><!--ID CHECKBOX-->
+                </div> 
+            </a>
+        </div>
+    </main>
+
+
+    <img id="xmas-tree" src="./images/tree.png" alt="Christmas Tree">
+
+    <script>
+        function saveCheckboxState() {
+            document.querySelectorAll('.card').forEach((card, index) => {
+                const checkbox = card.querySelector('input[type="checkbox"]');
+                localStorage.setItem(`checkbox-${index}`, checkbox.checked);
+            });
+        }
+
+        function loadCheckboxState() {
+            document.querySelectorAll('.card').forEach((card, index) => {
+                const checkbox = card.querySelector('input[type="checkbox"]');
+                const isChecked = localStorage.getItem(`checkbox-${index}`) === 'true';
+                checkbox.checked = isChecked;
+                toggleCross(card, isChecked);
+            });
+        }
+
+        function toggleCross(card, show) {
+            let cross = card.querySelector('.cross');
+            if (show) {
+                if (!cross) {
+                    cross = document.createElement('img');
+                    cross.classList.add('cross');
+                    cross.src = './images/cross.webp';
+                    cross.alt = 'Cross';
+                    card.appendChild(cross);
+
+                    cross.addEventListener('click', () => {
+                        const checkbox = card.querySelector('input[type="checkbox"]');
+                        checkbox.checked = false;
+                        saveCheckboxState();
+                        toggleCross(card, false);
+                    });
+                }
+            } else if (cross) {
+                cross.remove();
+            }
+        }
+
+        function addCheckboxListeners() {
+            document.querySelectorAll('.card').forEach((card) => {
+                const checkbox = card.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', () => {
+                    const isChecked = checkbox.checked;
+                    toggleCross(card, isChecked);
+                    saveCheckboxState();
+                });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCheckboxState();
+            addCheckboxListeners();
+        });
+
+    </script>
+</body>
+</html>
